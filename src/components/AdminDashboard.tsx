@@ -233,8 +233,12 @@ export const AdminDashboard: React.FC = () => {
               <span className="font-cinema text-lg font-bold text-white block leading-tight">
                 BABU CINEMAS
               </span>
-              <span className="text-[10px] uppercase font-mono text-amber-400 font-semibold">
+              <span className="text-[10px] uppercase font-mono text-amber-400 font-semibold block">
                 Admin Console
+              </span>
+              <span className="inline-flex items-center gap-1 text-[9px] font-mono text-emerald-400 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Firestore: cinemas-97357</span>
               </span>
             </div>
           </div>
@@ -964,13 +968,40 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {activeTab === 'settings' && (
-              <div className="pt-4 border-t border-white/10 space-y-2 text-xs">
-                <h3 className="font-semibold text-white">Theatre Profile</h3>
-                <div className="p-4 rounded-xl bg-zinc-900/60 border border-white/5 space-y-1 text-zinc-300">
-                  <p><span className="text-zinc-500">Name:</span> <strong className="text-white">Babu Cinemas</strong></p>
-                  <p><span className="text-zinc-500">Location:</span> Uthiramerur, Kanchipuram, Tamil Nadu, India</p>
-                  <p><span className="text-zinc-500">Helpline:</span> +91 98400 12345 / +91 4175 222333</p>
-                  <p><span className="text-zinc-500">Operating Hours:</span> Daily 09:00 AM – 11:30 PM</p>
+              <div className="pt-4 border-t border-white/10 space-y-4 text-xs">
+                <div>
+                  <h3 className="font-semibold text-white mb-2">Theatre Profile</h3>
+                  <div className="p-4 rounded-xl bg-zinc-900/60 border border-white/5 space-y-1 text-zinc-300">
+                    <p><span className="text-zinc-500">Name:</span> <strong className="text-white">Babu Cinemas</strong></p>
+                    <p><span className="text-zinc-500">Location:</span> Uthiramerur, Kanchipuram, Tamil Nadu, India</p>
+                    <p><span className="text-zinc-500">Helpline:</span> +91 98400 12345 / +91 4175 222333</p>
+                    <p><span className="text-zinc-500">Operating Hours:</span> Daily 09:00 AM – 11:30 PM</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-white mb-2">Cloud Database & Storage</h3>
+                  <div className="p-4 rounded-xl bg-zinc-900/60 border border-white/5 space-y-1.5 text-zinc-300 font-mono text-[11px]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Provider:</span>
+                      <span className="text-amber-400 font-bold">Google Cloud Firestore</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Project ID:</span>
+                      <span className="text-white">cinemas-97357</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Storage Bucket:</span>
+                      <span className="text-zinc-400">cinemas-97357.firebasestorage.app</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Status:</span>
+                      <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Connected & Synchronized
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

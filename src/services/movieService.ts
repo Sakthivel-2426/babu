@@ -153,31 +153,129 @@ class SupabaseBackendAdapter implements IMovieService {
   }
 }
 
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  writeBatch,
+} from 'firebase/firestore';
+import { firestore, isFirebaseConfigured } from '../lib/firebase';
+
 // ----------------------------------------------------------------------------
-// 3. FIREBASE CLOUD FIRESTORE ADAPTER (Future backend ready)
+// 3. FIREBASE CLOUD FIRESTORE ADAPTER (Active Project: cinemas-97357)
 // ----------------------------------------------------------------------------
 class FirebaseBackendAdapter implements IMovieService {
-  async getMovies(): Promise<Movie[]> {
-    // When Firebase credentials are provided in env, queries `collection(db, 'movies')`
+  private seeded = false;
+
+  private async ensureSeeded() {
+    if (this.seeded || !isFirebaseConfigured) return;
+    try {
+      const moviesCol = collection(firestore, 'movies');
+      const snap = await getDocs(moviesCol);
+      if (snap.empty) {
+        console.log('[MovieService] Initializing Cloud Firestore with Babu Cinemas movie registry...');
+        const initial = getRegisteredMovies().slice(0, 30);
+        const batch = writeBatch(firestore);
+        for (const movie of initial) {
+          const docRef = doc(firestore, 'movies', movie.id);
+          batch.set(docRef, movie);
+        }
+        await batch.commit();
+        console.log('[MovieService] Cloud Firestore seeded with initial movies successfully!');
+      }
+      this.seeded = true;
+    } catch (e) {
+      console.warn('[MovieService] Cloud Firestore seeding check note:', e);
+    }
+  }
+
+  async getMovies(filter?: { status?: MovieStatus; query?: string }): Promise<Movie[]> {
+    if (!isFirebaseConfigured) return getRegisteredMovies();
+    try {
+      await this.ensureSeeded();
+      const moviesCol = collection(firestore, 'movies');
+      const snap = await getDocs(moviesCol);
+      if (!snap.empty) {
+        const firestoreMovies: Movie[] = snap.docs.map((d) => d.data() as Movie);
+        let result = firestoreMovies;
+        if (filter?.status) {
+          result = result.filter((m) => m.status === filter.status);
+        }
+        if (filter?.query) {
+          const q = filter.query.toLowerCase();
+          result = result.filter(
+            (m) =>
+              m.title.toLowerCase().includes(q) ||
+              m.language.toLowerCase().includes(q) ||
+              m.director.toLowerCase().includes(q)
+          );
+        }
+        return sortMoviesLatestFirst(result);
+      }
+    } catch (err) {
+      console.warn('[MovieService] Cloud Firestore getMovies error, falling back to local registry:', err);
+    }
     return getRegisteredMovies();
   }
 
   async getMovieById(id: string): Promise<Movie | null> {
-    const list = getRegisteredMovies();
-    return list.find((m) => m.id === id) || null;
+    if (!isFirebaseConfigured) {
+      const list = getRegisteredMovies();
+      return list.find((m) => m.id === id) || null;
+    }
+    try {
+      const docRef = doc(firestore, 'movies', id);
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        return snap.data() as Movie;
+      }
+    } catch (err) {
+      console.warn('[MovieService] Firestore getMovieById error:', err);
+    }
+    const all = getRegisteredMovies();
+    return all.find((m) => m.id === id) || null;
   }
 
   async addMovie(movieData: Omit<Movie, 'id'>): Promise<Movie> {
     const id = `movie-${Date.now()}`;
-    return { id, ...movieData };
+    const newMovie: Movie = { id, ...movieData };
+    if (!isFirebaseConfigured) return newMovie;
+    try {
+      const docRef = doc(firestore, 'movies', id);
+      await setDoc(docRef, newMovie);
+      console.log(`[MovieService] Movie "${newMovie.title}" successfully added to Cloud Firestore.`);
+    } catch (err) {
+      console.warn('[MovieService] Firestore addMovie error:', err);
+    }
+    return newMovie;
   }
 
   async updateMovie(movie: Movie): Promise<Movie> {
+    if (!isFirebaseConfigured) return movie;
+    try {
+      const docRef = doc(firestore, 'movies', movie.id);
+      await setDoc(docRef, movie, { merge: true });
+      console.log(`[MovieService] Movie "${movie.title}" successfully updated in Cloud Firestore.`);
+    } catch (err) {
+      console.warn('[MovieService] Firestore updateMovie error:', err);
+    }
     return movie;
   }
 
-  async deleteMovie(_id: string): Promise<boolean> {
-    return true;
+  async deleteMovie(id: string): Promise<boolean> {
+    if (!isFirebaseConfigured) return true;
+    try {
+      const docRef = doc(firestore, 'movies', id);
+      await deleteDoc(docRef);
+      console.log(`[MovieService] Movie "${id}" deleted from Cloud Firestore.`);
+      return true;
+    } catch (err) {
+      console.warn('[MovieService] Firestore deleteMovie error:', err);
+      return false;
+    }
   }
 }
 
@@ -251,7 +349,7 @@ class LocalStorageBackendAdapter implements IMovieService {
 // UNIFIED MOVIE SERVICE FACADE
 // ----------------------------------------------------------------------------
 class UniversalMovieService implements IMovieService {
-  private activeProvider: BackendProviderType = 'mongodb';
+  private activeProvider: BackendProviderType = isFirebaseConfigured ? 'firebase' : 'mongodb';
   private adapters: Record<BackendProviderType, IMovieService> = {
     mongodb: new MongoDBBackendAdapter(),
     supabase: new SupabaseBackendAdapter(),

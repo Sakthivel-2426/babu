@@ -24,6 +24,7 @@ import {
   mergeMoviesWithoutDuplicates,
 } from '../data/moviesRegistry';
 import { movieService } from '../services/movieService';
+import { firestoreService } from '../services/firestoreService';
 
 // Generates next 7 days in YYYY-MM-DD and formatted labels
 export const getUpcomingDates = () => {
@@ -511,8 +512,9 @@ export const CinemaProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       status: 'CONFIRMED',
     };
 
-    // Async sync to MongoDB backend
-    api.createBooking(newBooking).catch((err) => console.warn('Booking sync to backend error:', err));
+    // Async sync to MongoDB backend and Cloud Firestore
+    api.createBooking(newBooking).catch((err) => console.warn('Booking sync to MongoDB error:', err));
+    firestoreService.saveBooking(newBooking).catch((err) => console.warn('Booking sync to Firestore note:', err));
 
     setBookings((prev) => [newBooking, ...prev]);
     setConfirmedBooking(newBooking);
@@ -523,6 +525,7 @@ export const CinemaProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const cancelBooking = (bookingId: string): boolean => {
     api.cancelBooking(bookingId).catch(() => {});
+    firestoreService.cancelBooking(bookingId).catch(() => {});
     setBookings((prev) =>
       prev.map((b) => (b.id === bookingId ? { ...b, status: 'CANCELLED' } : b))
     );
