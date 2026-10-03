@@ -39,7 +39,7 @@ export const BookingSummary: React.FC = () => {
 
   // Customer contact state for the ticket
   const [customerName, setCustomerName] = useState(currentUser?.name || 'Valued Guest');
-  const [customerEmail, setCustomerEmail] = useState(currentUser?.email || 'guest@babutheatre.com');
+  const [customerEmail, setCustomerEmail] = useState(currentUser?.email || 'guest@babucinemas.com');
   const [customerPhone, setCustomerPhone] = useState(currentUser?.phone || '+91 98400 12345');
 
   const pricing = getPricingSummary();
@@ -112,9 +112,13 @@ export const BookingSummary: React.FC = () => {
                 <p className="text-xs text-zinc-400 mt-0.5">
                   {selectedMovie?.language} · {selectedMovie?.duration} · {selectedMovie?.rating}
                 </p>
-                <div className="mt-2 text-xs text-amber-400 font-semibold flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>BABU THEATRE</span>
+                <div className="mt-2 text-xs text-amber-400 font-semibold flex items-center gap-1.5 flex-wrap">
+                  <span className="flex items-center gap-1 text-white font-bold">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span>BABU CINEMAS</span>
+                  </span>
+                  <span className="text-zinc-500">·</span>
+                  <span className="text-zinc-300 font-normal">Uthiramerur, Kanchipuram</span>
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Sparkles,
 } from 'lucide-react';
+import { api } from '../services/api';
 
 export const ContactView: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -21,9 +22,16 @@ export const ContactView: React.FC = () => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+
+    try {
+      await api.submitContactMessage(formData);
+    } catch (err) {
+      console.warn('Backend message submission error:', err);
+    }
+
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
@@ -39,7 +47,7 @@ export const ContactView: React.FC = () => {
 
   const handleGetDirections = () => {
     window.open(
-      'https://maps.google.com/?q=Babu+Theatre+Tamil+Nadu+India',
+      'https://maps.google.com/?q=Babu+Cinemas,+Uthiramerur,+Kanchipuram,+Tamil+Nadu',
       '_blank',
       'noopener,noreferrer'
     );
@@ -51,7 +59,7 @@ export const ContactView: React.FC = () => {
       <div className="max-w-2xl">
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500 mb-2">
           <MapPin className="w-4 h-4" />
-          <span>Connect with Babu Theatre</span>
+          <span>Connect with Babu Cinemas</span>
         </div>
         <h1 className="font-cinema text-3xl sm:text-4xl font-extrabold text-white">
           Contact Us & Location
@@ -73,7 +81,7 @@ export const ContactView: React.FC = () => {
               <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
               <h3 className="text-base font-bold text-white">Message Received!</h3>
               <p className="text-xs text-zinc-300">
-                Thank you for contacting Babu Theatre. Our customer desk will respond within 2 business hours.
+                Thank you for contacting Babu Cinemas. Our customer desk will respond within 2 business hours.
               </p>
             </div>
           ) : (
@@ -165,9 +173,9 @@ export const ContactView: React.FC = () => {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="font-bold text-white block text-sm">BABU THEATRE</span>
+                  <span className="font-bold text-white block text-sm">BABU CINEMAS</span>
                   <p className="text-zinc-400 mt-0.5 leading-relaxed">
-                    Cinema Boulevard, Main Highway, Tiruvannamalai / Vellore Road, Tamil Nadu, India — 606601
+                    Babu Cinemas, Uthiramerur, Kanchipuram, Tamil Nadu, India
                   </p>
                 </div>
               </div>
@@ -188,7 +196,7 @@ export const ContactView: React.FC = () => {
                 </div>
                 <div>
                   <span className="font-bold text-white block">Email Desk</span>
-                  <p className="text-zinc-400 mt-0.5">support@babutheatre.com · bookings@babutheatre.com</p>
+                  <p className="text-zinc-400 mt-0.5">support@babucinemas.com · bookings@babucinemas.com</p>
                 </div>
               </div>
 
@@ -206,31 +214,25 @@ export const ContactView: React.FC = () => {
               </div>
             </div>
 
-            {/* Google Maps Visual Representation */}
-            <div className="pt-2">
-              <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 group">
-                {/* Stylized Dark Grid Map */}
-                <div className="absolute inset-0 bg-[#0f1118] flex items-center justify-center">
-                  <div className="w-full h-full opacity-30 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                    <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-900 animate-bounce">
-                      <MapPin className="w-5 h-5 fill-white" />
-                    </div>
-                    <span className="text-xs font-bold text-white mt-2">Babu Theatre Main Complex</span>
-                    <span className="text-[10px] text-zinc-400">Tiruvannamalai, Tamil Nadu</span>
-                  </div>
-                </div>
-
-                <div className="absolute bottom-3 right-3 left-3 flex justify-center">
-                  <button
-                    onClick={handleGetDirections}
-                    className="w-full py-2.5 px-4 rounded-xl text-xs font-bold tracking-wider text-zinc-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-950/40 flex items-center justify-center gap-2 transition-all focus:outline-none"
-                  >
-                    <Navigation className="w-4 h-4" />
-                    <span>GET DIRECTIONS ON GOOGLE MAPS</span>
-                  </button>
-                </div>
+            {/* Google Maps Visual Representation & Embedded Map */}
+            <div className="pt-2 space-y-3">
+              <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 group shadow-lg">
+                <iframe
+                  title="Babu Cinemas Location Map - Uthiramerur, Kanchipuram"
+                  src="https://maps.google.com/maps?q=Babu+Cinemas+Uthiramerur+Kanchipuram+Tamil+Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  className="w-full h-full border-0 filter contrast-125 opacity-90 group-hover:opacity-100 transition-opacity"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
+
+              <button
+                onClick={handleGetDirections}
+                className="w-full py-3 px-4 rounded-xl text-xs font-bold tracking-wider text-zinc-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-950/40 flex items-center justify-center gap-2 transition-all focus:outline-none"
+              >
+                <Navigation className="w-4 h-4" />
+                <span>OPEN DIRECTIONS IN GOOGLE MAPS</span>
+              </button>
             </div>
           </div>
         </div>

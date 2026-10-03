@@ -57,7 +57,7 @@ export const OffersView: React.FC = () => {
           <span>Exclusive Cinema Privileges</span>
         </div>
         <h1 className="font-cinema text-3xl sm:text-4xl font-extrabold text-white">
-          Offers & Deals at Babu Theatre
+          Offers & Deals at Babu Cinemas
         </h1>
         <p className="text-sm text-zinc-400 mt-1">
           Enjoy special discounts on ticket reservations, gourmet food combos, and family packages.

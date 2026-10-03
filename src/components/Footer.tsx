@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
                 <Film className="w-5 h-5" />
               </div>
               <span className="font-cinema text-2xl font-black text-white tracking-wider">
-                BABU THEATRE
+                BABU CINEMAS
               </span>
             </div>
 
@@ -151,7 +151,7 @@ export const Footer: React.FC = () => {
             <div className="space-y-2 text-[11px] leading-relaxed">
               <p className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5" />
-                <span>Babu Theatre, Cinema Boulevard, Tamil Nadu, India — 606601</span>
+                <span>Babu Cinemas, Uthiramerur, Kanchipuram, Tamil Nadu, India</span>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
@@ -159,7 +159,7 @@ export const Footer: React.FC = () => {
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                <span>support@babutheatre.com</span>
+                <span>support@babucinemas.com</span>
               </p>
               <p className="flex items-center gap-2">
                 <Clock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -171,7 +171,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Copyright & Disclaimer */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
-          <p>© {new Date().getFullYear()} BABU THEATRE. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} BABU CINEMAS. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span>Terms of Reservation</span>
             <span>·</span>

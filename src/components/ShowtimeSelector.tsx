@@ -63,8 +63,13 @@ export const ShowtimeSelector: React.FC = () => {
         <h1 className="font-cinema text-3xl sm:text-4xl font-extrabold text-white">
           Show Timings & Schedules
         </h1>
-        <p className="text-sm text-zinc-400 mt-1">
-          Select your date, movie, and comfortable showtime to book seats.
+        <p className="text-sm text-zinc-400 mt-1 flex items-center gap-1.5 flex-wrap">
+          <span className="text-amber-400 font-semibold flex items-center gap-1">
+            <MapPin className="w-3.5 h-3.5 text-red-500" />
+            Babu Cinemas, Uthiramerur
+          </span>
+          <span className="text-zinc-600">·</span>
+          <span>Select your date, movie, and comfortable showtime to book seats.</span>
         </p>
       </div>
 

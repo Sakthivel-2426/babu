@@ -1,4 +1,4 @@
-export type MovieStatus = 'now-showing' | 'coming-soon';
+export type MovieStatus = 'now-showing' | 'coming-soon' | 'ended';
 
 export type ScreenFormat = '2D' | '3D' | '4K Dolby Atmos' | 'IMAX Laser';
 
@@ -24,17 +24,21 @@ export interface Movie {
   tagline?: string;
   description: string;
   genre: string[];
-  language: string;
+  language: string; // 'Tamil' | 'English' | 'Tamil & English'
   duration: string; // e.g. "2h 45m"
   rating: string; // e.g. "U/A 16+"
+  certificate?: string; // e.g. "U", "U/A", "A"
   imdbScore?: number; // e.g. 8.6
-  releaseDate: string; // e.g. "2026-09-18"
+  releaseDate: string; // e.g. "2025-05-01"
+  releaseYear?: number; // e.g. 2025
   director: string;
   cast: CastMember[];
   posterUrl: string;
   backdropUrl?: string;
   trailerUrl?: string;
-  status: MovieStatus;
+  status: MovieStatus; // 'now-showing' (Currently Showing) | 'coming-soon' (Upcoming) | 'ended' (Ended)
+  category?: 'now-showing' | 'upcoming' | 'popular' | 'latest';
+  customShowtimes?: string[]; // e.g. ['10:00 AM', '01:30 PM', '06:30 PM', '10:00 PM']
   availableFormats: ScreenFormat[];
   screens: string[];
 }

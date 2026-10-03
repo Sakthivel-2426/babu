@@ -16,26 +16,54 @@ export const AuthModal: React.FC = () => {
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
+  const [authError, setAuthError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { register } = useCinema();
 
   if (!isAuthModalOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailOrPhone) return;
+    setAuthError('');
 
     if (authModalMode === 'signup' && password !== confirmPassword) {
-      alert('Passwords do not match. Please re-enter.');
+      setAuthError('Passwords do not match. Please re-enter.');
       return;
     }
 
-    login(emailOrPhone, 'customer', name);
+    setIsSubmitting(true);
+    try {
+      if (authModalMode === 'signup') {
+        const success = await register({
+          name: name || 'Moviegoer',
+          email: emailOrPhone.includes('@') ? emailOrPhone : `${emailOrPhone}@guest.com`,
+          phone: !emailOrPhone.includes('@') ? emailOrPhone : '+91 98400 12345',
+          password,
+        });
+        if (!success) {
+          setAuthError('Registration could not be completed. Please try again.');
+        }
+      } else {
+        const success = await login(emailOrPhone, password);
+        if (!success) {
+          setAuthError('Invalid credentials. Please verify your email/phone and password.');
+        }
+      }
+    } catch (err: any) {
+      setAuthError(err.message || 'Authentication failed. Please check your connection.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleQuickDemoLogin = (role: 'customer' | 'admin') => {
+  const handleQuickDemoLogin = async (role: 'customer' | 'admin') => {
+    setAuthError('');
     if (role === 'admin') {
-      login('admin@babutheatre.com', 'admin', 'Babu Theatre Admin');
+      await login('admin@babucinemas.com', 'AdminPassword2026!', 'admin', 'Babu Cinemas Admin');
     } else {
-      login('velshakthi347@gmail.com', 'customer', 'Vel Shakthi');
+      await login('velshakthi347@gmail.com', 'CustomerPassword2026!', 'customer', 'Vel Shakthi');
     }
   };
 
@@ -56,7 +84,7 @@ export const AuthModal: React.FC = () => {
             <Film className="w-6 h-6 text-white" />
           </div>
           <h2 className="font-cinema text-2xl font-black text-white">
-            BABU THEATRE
+            BABU CINEMAS
           </h2>
           <p className="text-xs text-zinc-400">
             Your Movie. Your Seat. Your Experience.
@@ -86,6 +114,13 @@ export const AuthModal: React.FC = () => {
             CREATE ACCOUNT
           </button>
         </div>
+
+        {/* Error message */}
+        {authError && (
+          <div className="p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-red-300 text-xs">
+            {authError}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">

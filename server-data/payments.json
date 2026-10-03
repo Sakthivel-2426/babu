@@ -1,0 +1,38 @@
+[
+  {
+    "bookingId": "BT20263422",
+    "razorpayOrderId": "order_mock_1790833912490_8152",
+    "razorpayPaymentId": "pay_rzp_1790833919128",
+    "razorpaySignature": "sha256_verified_sandbox",
+    "amount": 280,
+    "currency": "INR",
+    "status": "captured",
+    "method": "UPI (Verified QR Scan)",
+    "customerEmail": "velshakthi347@gmail.com",
+    "customerPhone": "+91 98765 43210"
+  },
+  {
+    "bookingId": "BT20269626",
+    "razorpayOrderId": "order_mock_1790830868471_3307",
+    "razorpayPaymentId": "pay_rzp_1790830884333",
+    "razorpaySignature": "sha256_verified_sandbox",
+    "amount": 280,
+    "currency": "INR",
+    "status": "captured",
+    "method": "UPI (Verified QR Scan)",
+    "customerEmail": "velshakthi347@gmail.com",
+    "customerPhone": "+91 98765 43210"
+  },
+  {
+    "bookingId": "BT20269138",
+    "razorpayOrderId": "order_mock_1790830016729_3952",
+    "razorpayPaymentId": "pay_test_998822",
+    "razorpaySignature": "sha256_mock_sig",
+    "amount": 460,
+    "currency": "INR",
+    "status": "captured",
+    "method": "Razorpay (Instant UPI)",
+    "customerEmail": "shakthi@example.com",
+    "customerPhone": "+91 98400 12345"
+  }
+]

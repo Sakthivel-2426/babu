@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Ticket, Info, Play } from 'lucide-react';
+import { Star, Ticket, Info, Play, Calendar, Clock } from 'lucide-react';
 import { Movie } from '../types';
 import { useCinema } from '../context/CinemaContext';
 
@@ -32,6 +32,10 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onViewDetails, onBo
 
   const isComingSoon = movie.status === 'coming-soon';
 
+  const releaseYear =
+    movie.releaseYear ||
+    (movie.releaseDate ? new Date(movie.releaseDate).getFullYear() : 2024);
+
   return (
     <div className="group relative bg-[#10121a] rounded-2xl overflow-hidden border border-white/10 hover:border-red-600/50 shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full">
       {/* Poster Image Container */}
@@ -40,6 +44,11 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onViewDetails, onBo
           src={movie.posterUrl}
           alt={movie.title}
           referrerPolicy="no-referrer"
+          loading="lazy"
+          onError={(e) => {
+            // Graceful fallback to verified local cinematic poster if external link blocks
+            (e.target as HTMLImageElement).src = '/src/assets/images/movie_poster_retro_1790660356867.jpg';
+          }}
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
         />
 
@@ -83,15 +92,15 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onViewDetails, onBo
           </div>
         )}
 
-        {/* Content Rating (U/A, etc.) */}
-        <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-black/80 text-zinc-300 border border-white/10">
-          {movie.rating}
+        {/* Content Rating / Certificate */}
+        <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-black/85 text-amber-300 border border-white/10">
+          {movie.certificate || movie.rating}
         </div>
       </div>
 
       {/* Movie Details Content */}
       <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between space-y-3">
-        <div>
+        <div className="space-y-2">
           <h3
             onClick={handleDetails}
             className="font-cinema text-lg sm:text-xl font-bold text-white tracking-wide group-hover:text-red-400 transition-colors cursor-pointer truncate"
@@ -100,22 +109,73 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onViewDetails, onBo
             {movie.title}
           </h3>
 
-          {/* Unboxed Metadata per Zero-Pill discipline */}
-          <div className="flex items-center gap-2 text-xs text-zinc-400 mt-1.5">
-            <span className="truncate max-w-[140px] text-zinc-300">{movie.genre.join(', ')}</span>
+          {/* Unboxed Metadata with Release Year, Genre, and Duration */}
+          <div className="flex items-center gap-1.5 text-xs text-zinc-400 flex-wrap">
+            <span className="font-mono text-amber-400 font-bold">{releaseYear}</span>
             <span aria-hidden="true" className="text-zinc-600">·</span>
-            <span className="whitespace-nowrap">{movie.duration}</span>
+            <span className="truncate max-w-[130px] text-zinc-300">{movie.genre.join(', ')}</span>
+            <span aria-hidden="true" className="text-zinc-600">·</span>
+            <span className="whitespace-nowrap font-mono text-[11px] text-zinc-400">{movie.duration}</span>
           </div>
 
-          {isComingSoon && (
-            <div className="mt-2 text-xs font-medium text-amber-400/90">
-              Releasing on {new Date(movie.releaseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          {/* Release Date info */}
+          <div className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+            <Calendar className="w-3 h-3 text-amber-400 shrink-0" />
+            <span className="truncate">
+              {isComingSoon ? 'Releasing on ' : 'Release: '}
+              <strong className="text-zinc-200 font-medium">
+                {movie.releaseDate
+                  ? new Date(movie.releaseDate).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
+                  : releaseYear}
+              </strong>
+            </span>
+          </div>
+
+          {/* Brief plot snippet */}
+          {movie.description && (
+            <p className="text-[11px] text-zinc-400 line-clamp-1 leading-snug">
+              {movie.description}
+            </p>
+          )}
+
+          {/* Show Timings for Now Showing */}
+          {!isComingSoon && (
+            <div className="pt-2 border-t border-white/5 space-y-1">
+              <div className="flex items-center justify-between text-[11px] text-zinc-400">
+                <span className="flex items-center gap-1 font-semibold text-zinc-300">
+                  <Clock className="w-3 h-3 text-red-500" />
+                  <span>Showtimes</span>
+                </span>
+                <span className="text-[10px] font-mono text-zinc-500">Babu Cinemas</span>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {(movie.customShowtimes && movie.customShowtimes.length > 0
+                  ? movie.customShowtimes
+                  : ['10:00 AM', '01:30 PM', '06:30 PM', '10:00 PM']
+                ).slice(0, 4).map((time) => (
+                  <button
+                    key={time}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleBook();
+                    }}
+                    className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-900 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/10 transition-colors"
+                    title={`Click to book ${time}`}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="pt-2 grid grid-cols-2 gap-2">
+        {/* Action Buttons: Book Now, Details, and Trailer */}
+        <div className="pt-2 space-y-2">
           {!isComingSoon ? (
             <>
               <button
@@ -125,31 +185,40 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onViewDetails, onBo
                 <Ticket className="w-3.5 h-3.5" />
                 <span>BOOK NOW</span>
               </button>
-              <button
-                onClick={handleDetails}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold tracking-wider text-zinc-300 bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition-colors flex items-center justify-center gap-1.5 focus:outline-none"
-              >
-                <Info className="w-3.5 h-3.5" />
-                <span>DETAILS</span>
-              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={handleDetails}
+                  className="w-full py-2 px-2.5 rounded-xl text-xs font-semibold tracking-wider text-zinc-300 bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition-colors flex items-center justify-center gap-1 focus:outline-none"
+                >
+                  <Info className="w-3.5 h-3.5" />
+                  <span>DETAILS</span>
+                </button>
+                <button
+                  onClick={() => setActiveTrailerMovie(movie)}
+                  className="w-full py-2 px-2.5 rounded-xl text-xs font-semibold tracking-wider text-amber-400 bg-amber-950/30 hover:bg-amber-900/50 border border-amber-600/30 transition-colors flex items-center justify-center gap-1 focus:outline-none"
+                >
+                  <Play className="w-3.5 h-3.5 fill-amber-400" />
+                  <span>TRAILER</span>
+                </button>
+              </div>
             </>
           ) : (
-            <>
+            <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={handleDetails}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-white bg-zinc-800 hover:bg-zinc-700 transition-colors flex items-center justify-center gap-1.5 focus:outline-none col-span-1"
+                className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-white bg-zinc-800 hover:bg-zinc-700 transition-colors flex items-center justify-center gap-1.5 focus:outline-none"
               >
                 <Info className="w-3.5 h-3.5" />
                 <span>DETAILS</span>
               </button>
               <button
                 onClick={() => setActiveTrailerMovie(movie)}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-amber-400 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-600/30 transition-colors flex items-center justify-center gap-1.5 focus:outline-none col-span-1"
+                className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-amber-400 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-600/30 transition-colors flex items-center justify-center gap-1.5 focus:outline-none"
               >
                 <Play className="w-3.5 h-3.5 fill-amber-400" />
                 <span>TRAILER</span>
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>

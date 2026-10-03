@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Film, Search, User, Menu, X, Ticket, ShieldCheck, LogOut } from 'lucide-react';
+import { Film, Search, User, Menu, X, Ticket, ShieldCheck, LogOut, MapPin } from 'lucide-react';
 import { useCinema } from '../context/CinemaContext';
 import { AppView } from '../types';
 
@@ -49,10 +49,10 @@ export const Navbar: React.FC = () => {
           </div>
           <div>
             <span className="font-cinema text-xl sm:text-2xl font-black tracking-wider text-white group-hover:text-red-500 transition-colors">
-              BABU THEATRE
+              BABU CINEMAS
             </span>
             <span className="hidden sm:block text-[10px] tracking-widest text-amber-400/80 font-medium uppercase">
-              Dolby Atmos · 4K RGB Laser
+              Uthiramerur, Kanchipuram · 4K Laser & Dolby Atmos
             </span>
           </div>
         </button>
@@ -132,7 +132,7 @@ export const Navbar: React.FC = () => {
                     <p className="text-[11px] text-zinc-400 truncate">{currentUser.email}</p>
                     {currentUser.role === 'admin' && (
                       <span className="mt-1 inline-block text-[10px] font-mono text-amber-400 font-semibold">
-                        Role: Theatre Administrator
+                        Role: Cinema Administrator
                       </span>
                     )}
                   </div>
@@ -196,6 +196,10 @@ export const Navbar: React.FC = () => {
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-b border-white/10 bg-[#0c0d12]/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2">
+          <div className="px-3 py-1.5 mb-2 rounded-lg bg-zinc-900 border border-white/5 flex items-center gap-2 text-[11px] text-zinc-300">
+            <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+            <span>Uthiramerur, Kanchipuram, Tamil Nadu</span>
+          </div>
           {navLinks.map((link) => {
             const isActive = currentView === link.view;
             return (

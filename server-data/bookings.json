@@ -1,0 +1,101 @@
+[
+  {
+    "userName": "Vel Shakthi",
+    "userEmail": "velshakthi347@gmail.com",
+    "userPhone": "+91 98765 43210",
+    "totalPaid": 280,
+    "ticketTotal": 250,
+    "convenienceFee": 30,
+    "discount": 0,
+    "id": "BT20263422",
+    "theatreName": "BABU CINEMAS",
+    "paymentMethod": "UPI (Verified QR Scan)",
+    "paymentId": "pay_rzp_1790833919128",
+    "orderId": "order_mock_1790833912490_8152",
+    "status": "CONFIRMED",
+    "bookedAt": "2026-10-01 11:21"
+  },
+  {
+    "userName": "Vel Shakthi",
+    "userEmail": "velshakthi347@gmail.com",
+    "userPhone": "+91 98765 43210",
+    "totalPaid": 280,
+    "ticketTotal": 250,
+    "convenienceFee": 30,
+    "discount": 0,
+    "id": "BT20269626",
+    "theatreName": "BABU CINEMAS",
+    "paymentMethod": "UPI (Verified QR Scan)",
+    "paymentId": "pay_rzp_1790830884333",
+    "orderId": "order_mock_1790830868471_3307",
+    "status": "CONFIRMED",
+    "bookedAt": "2026-10-01 10:31"
+  },
+  {
+    "ticketTotal": 400,
+    "totalPaid": 460,
+    "userName": "Vel Shakthi",
+    "discount": 0,
+    "movieTitle": "Retro",
+    "movieId": "movie-retro",
+    "seats": [
+      {
+        "price": 200,
+        "id": "D4",
+        "tier": "Premium"
+      },
+      {
+        "price": 200,
+        "id": "D5",
+        "tier": "Premium"
+      }
+    ],
+    "userEmail": "shakthi@example.com",
+    "screenName": "Screen 1 - 4K Dolby Atmos",
+    "convenienceFee": 60,
+    "date": "2026-10-01",
+    "userPhone": "+91 98400 12345",
+    "showtime": "06:30 PM",
+    "id": "BT20269138",
+    "theatreName": "BABU CINEMAS",
+    "paymentMethod": "Razorpay (Instant UPI)",
+    "paymentId": "pay_test_998822",
+    "orderId": "order_mock_1790830016729_3952",
+    "status": "CONFIRMED",
+    "bookedAt": "2026-10-01 10:16"
+  },
+  {
+    "id": "BT20268492",
+    "userName": "Vel Shakthi",
+    "userEmail": "shakthi@example.com",
+    "userPhone": "+91 98400 12345",
+    "movieId": "movie-retro",
+    "movieTitle": "Retro",
+    "moviePoster": "/src/assets/images/movie_poster_retro_1790660356867.jpg",
+    "movieFormat": "4K Dolby Atmos",
+    "theatreName": "BABU CINEMAS",
+    "screenName": "Screen 1 - 4K Dolby Atmos",
+    "date": "2026-09-30",
+    "showtime": "06:30 PM",
+    "seats": [
+      {
+        "id": "E6",
+        "tier": "Premium",
+        "price": 200
+      },
+      {
+        "id": "E7",
+        "tier": "Premium",
+        "price": 200
+      }
+    ],
+    "ticketTotal": 400,
+    "convenienceFee": 60,
+    "discount": 60,
+    "discountCode": "WEEKEND15",
+    "totalPaid": 400,
+    "paymentMethod": "Razorpay UPI (Instant)",
+    "bookedAt": "2026-09-29 14:30",
+    "status": "CONFIRMED"
+  }
+]

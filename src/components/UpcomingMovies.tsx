@@ -20,7 +20,7 @@ export const UpcomingMovies: React.FC = () => {
               <span>Future Releases</span>
             </div>
             <h2 className="font-cinema text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Coming Soon to Babu Theatre
+              Coming Soon to Babu Cinemas
             </h2>
             <p className="text-sm text-zinc-400 mt-1">
               Mark your calendars for the most awaited theatrical spectacles.

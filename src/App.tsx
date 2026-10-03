@@ -95,13 +95,13 @@ const AppContent: React.FC = () => {
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="space-y-3 max-w-xl">
                   <span className="text-xs font-mono uppercase tracking-widest text-amber-400 font-semibold">
-                    The Babu Theatre Benchmark
+                    The Babu Cinemas Benchmark
                   </span>
                   <h3 className="font-cinema text-3xl font-extrabold text-white">
                     “Your Movie. Your Seat. Your Experience.”
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                    Designed from the ground up for movie lovers across Tamil Nadu, Babu Theatre delivers crystal-clear 4K laser projection, immersive 3D surround sound, and hygienic concession dining.
+                    Located in Uthiramerur, Kanchipuram, Tamil Nadu, India, Babu Cinemas delivers crystal-clear 4K laser projection, immersive 3D surround sound, and hygienic concession dining for movie lovers across the region.
                   </p>
                 </div>
 

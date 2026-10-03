@@ -187,7 +187,7 @@ export const MovieDetailsView: React.FC = () => {
             <div>
               <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>Auditorium Formats at Babu Theatre</span>
+                <span>Auditorium Formats at Babu Cinemas</span>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {selectedMovie.availableFormats.map((fmt) => (

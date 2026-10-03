@@ -101,6 +101,11 @@ export const MyBookingsView: React.FC = () => {
                       {booking.movieTitle}
                     </h2>
 
+                    <p className="text-[11px] text-zinc-400 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-red-500" />
+                      <span>Babu Cinemas – Uthiramerur, Kanchipuram</span>
+                    </p>
+
                     <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400 pt-1">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5 text-zinc-500" />

@@ -14,6 +14,7 @@ import {
   Clock,
   MapPin,
   ChevronRight,
+  Navigation,
 } from 'lucide-react';
 import { THEATRE_FACILITIES, THEATRE_SCREENS, heroBannerImg } from '../data/mockData';
 import { useCinema } from '../context/CinemaContext';
@@ -46,7 +47,7 @@ export const AboutTheatre: React.FC = () => {
       <div className="relative rounded-3xl overflow-hidden border border-white/15 bg-zinc-950 min-h-[380px] sm:min-h-[440px] flex items-center shadow-2xl">
         <img
           src={heroBannerImg}
-          alt="Babu Theatre Auditorium"
+          alt="Babu Cinemas Auditorium"
           referrerPolicy="no-referrer"
           className="absolute inset-0 w-full h-full object-cover object-center filter brightness-50"
         />
@@ -59,7 +60,7 @@ export const AboutTheatre: React.FC = () => {
           </div>
 
           <h1 className="font-cinema text-4xl sm:text-5xl font-black text-white tracking-tight">
-            About Babu Theatre
+            About Babu Cinemas
           </h1>
 
           <p className="text-amber-400 text-base sm:text-lg font-serif italic">
@@ -67,7 +68,7 @@ export const AboutTheatre: React.FC = () => {
           </p>
 
           <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
-            Established as a benchmark in theatrical excellence, Babu Theatre is Tamil Nadu’s premier cinematic destination. Combining cutting-edge 4K Dual RGB Laser digital projection, 128-channel immersive Dolby Atmos acoustics, and unmatched hospitality, we transform every film screening into an unforgettable sensory event.
+            Established as a benchmark in theatrical excellence, Babu Cinemas is located in Uthiramerur, Kanchipuram, Tamil Nadu, India. Combining cutting-edge 4K Dual RGB Laser digital projection, 128-channel immersive Dolby Atmos acoustics, and unmatched hospitality, we transform every film screening into an unforgettable sensory event.
           </p>
         </div>
       </div>
@@ -125,7 +126,7 @@ export const AboutTheatre: React.FC = () => {
             Designed for Pure Cinematic Comfort
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Every corner of Babu Theatre is curated for seamless enjoyment, safety, and leisure.
+            Every corner of Babu Cinemas is curated for seamless enjoyment, safety, and leisure.
           </p>
         </div>
 
@@ -212,6 +213,46 @@ export const AboutTheatre: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Location & Directions Section */}
+      <div className="p-8 rounded-3xl bg-[#10121a] border border-white/10 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 max-w-xl">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-red-500">
+            <MapPin className="w-4 h-4" />
+            <span>Theatre Location</span>
+          </div>
+          <h3 className="font-cinema text-2xl font-bold text-white">
+            Babu Cinemas, Uthiramerur, Kanchipuram
+          </h3>
+          <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            Babu Cinemas, Uthiramerur, Kanchipuram, Tamil Nadu, India. Conveniently situated with easy transit access and dedicated multi-level parking.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => {
+              window.open(
+                'https://maps.google.com/?q=Babu+Cinemas,+Uthiramerur,+Kanchipuram,+Tamil+Nadu',
+                '_blank',
+                'noopener,noreferrer'
+              );
+            }}
+            className="px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider text-zinc-950 bg-amber-400 hover:bg-amber-300 transition-all flex items-center gap-2 shadow-lg shadow-amber-950/40 focus:outline-none"
+          >
+            <Navigation className="w-4 h-4" />
+            <span>GET DIRECTIONS ON GOOGLE MAPS</span>
+          </button>
+          <button
+            onClick={() => {
+              setCurrentView('contact');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="px-6 py-3.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-zinc-900 hover:bg-zinc-800 border border-white/15 transition-all focus:outline-none"
+          >
+            <span>CONTACT BOX OFFICE</span>
+          </button>
         </div>
       </div>
     </div>

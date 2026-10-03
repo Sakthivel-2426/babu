@@ -95,7 +95,7 @@ export const SeatLayout: React.FC = () => {
             </span>
           </h1>
           <p className="text-xs text-zinc-400 mt-1">
-            Babu Theatre · {selectedShowtime?.screenName || 'Screen 1'} · {selectedDate} ·{' '}
+            Babu Cinemas · {selectedShowtime?.screenName || 'Screen 1'} · {selectedDate} ·{' '}
             <span className="text-amber-400 font-semibold">{selectedShowtime?.time || '06:30 PM'}</span>
           </p>
         </div>

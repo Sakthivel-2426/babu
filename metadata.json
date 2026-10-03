@@ -1,6 +1,6 @@
 {
-  "name": "Babu Theatre - Movie Ticket Booking",
-  "description": "Premium movie ticket booking platform for Babu Theatre. Explore now showing and upcoming movies, check showtimes, select seats, and book tickets seamlessly.",
+  "name": "Babu Cinemas - Movie Ticket Booking",
+  "description": "Premium movie ticket booking platform for Babu Cinemas. Explore now showing and upcoming movies, check showtimes, select seats, and book tickets seamlessly.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useCinema } from '../context/CinemaContext';
 import { Booking } from '../types';
+import { api } from '../services/api';
 
 interface DigitalTicketProps {
   booking?: Booking;
@@ -21,6 +22,15 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
   const { confirmedBooking, setCurrentView } = useCinema();
 
   const booking = propBooking || confirmedBooking;
+  const [ticketQrUrl, setTicketQrUrl] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (booking?.id) {
+      api.getTicketQr(booking.id).then((qr) => {
+        if (qr) setTicketQrUrl(qr);
+      }).catch(() => {});
+    }
+  }, [booking?.id]);
 
   if (!booking) {
     return (
@@ -43,11 +53,11 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: `Movie Ticket - ${booking.movieTitle} at Babu Theatre`,
-        text: `Booked ${booking.movieTitle} at Babu Theatre! Booking ID: ${booking.id}, Seats: ${booking.seats.map((s) => s.id).join(', ')}`,
+        title: `Movie Ticket - ${booking.movieTitle} at Babu Cinemas`,
+        text: `Booked ${booking.movieTitle} at Babu Cinemas! Booking ID: ${booking.id}, Seats: ${booking.seats.map((s) => s.id).join(', ')}`,
       }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(`Babu Theatre Ticket: ${booking.movieTitle} (${booking.showtime}) - Booking ID: ${booking.id}`);
+      navigator.clipboard.writeText(`Babu Cinemas Ticket: ${booking.movieTitle} (${booking.showtime}) - Booking ID: ${booking.id}`);
       alert('Ticket details copied to clipboard!');
     }
   };
@@ -63,7 +73,7 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
           🎉 BOOKING CONFIRMED
         </h1>
         <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-md mx-auto">
-          Your reservation is confirmed at Babu Theatre. Please present this digital ticket or SMS at the entrance.
+          Your reservation is confirmed at Babu Cinemas. Please present this digital ticket or SMS at the entrance.
         </p>
       </div>
 
@@ -78,7 +88,7 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
             <Ticket className="w-6 h-6 text-amber-200" />
             <div>
               <span className="font-cinema text-xl sm:text-2xl font-black tracking-wider block leading-none">
-                BABU THEATRE
+                BABU CINEMAS
               </span>
               <span className="text-[10px] tracking-widest text-amber-200/90 font-medium uppercase">
                 Official Digital Admission E-Ticket
@@ -109,7 +119,7 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
               </h2>
               <p className="text-xs text-zinc-400 mt-0.5 flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-red-500" />
-                <span>Babu Theatre, Cinema Boulevard, Tamil Nadu</span>
+                <span>Babu Cinemas, Uthiramerur, Kanchipuram, Tamil Nadu, India</span>
               </p>
             </div>
 
@@ -179,9 +189,17 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
 
           {/* Right Ticket Stub with Perforated Line & QR Code (4 cols) */}
           <div className="md:col-span-4 flex flex-col items-center justify-center p-4 bg-zinc-950/80 rounded-2xl border border-white/10 text-center">
-            {/* SVG QR Code */}
+            {/* Digital Entry QR Code */}
             <div className="p-3 bg-white rounded-xl shadow-lg inline-block">
-              <QrCode className="w-28 h-28 text-black" />
+              {ticketQrUrl ? (
+                <img
+                  src={ticketQrUrl}
+                  alt="Verified Babu Cinemas Admission QR"
+                  className="w-28 h-28 object-contain rounded"
+                />
+              ) : (
+                <QrCode className="w-28 h-28 text-black" />
+              )}
             </div>
             <span className="font-mono text-[10px] font-bold text-zinc-400 mt-2 tracking-wider">
               {booking.id}
@@ -205,8 +223,8 @@ export const DigitalTicket: React.FC<DigitalTicketProps> = ({ booking: propBooki
 
         {/* Perforated Stub Visual Effect */}
         <div className="relative py-2 bg-zinc-950/60 border-t border-dashed border-white/20 px-6 flex items-center justify-between text-[10px] text-zinc-500">
-          <span>Non-transferable · Babu Theatre Policies Apply</span>
-          <span>Security Hash: #BT{booking.id.slice(-4)}</span>
+          <span>Non-transferable · Babu Cinemas Policies Apply</span>
+          <span>Security Hash: #BC{booking.id.slice(-4)}</span>
         </div>
       </div>
 
